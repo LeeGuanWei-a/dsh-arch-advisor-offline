@@ -1,0 +1,5 @@
+# dsh-arch-advisor-offline bundle patch: inserts this plugin into a profile's layer stack.
+# Installed with:  dsh plugin --profile web add github:LeeGuanWei-a/dsh-arch-advisor-offline
+- insert:
+    - id: dsh-arch-advisor-offline
+      name: 'dsh-arch-advisor-offline'
