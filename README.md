@@ -6,7 +6,7 @@
 
 **在线版的"完全离线"姊妹插件。** 把开源知识库
 [awesome-architecture](https://github.com/study8677/awesome-architecture)
-（40 篇教程、31 个模板、6 个案例，中英全量）**打包进插件本体**，
+（40 篇教程 + T01 基础模型训练决策专题、31 个模板、6 个案例，中英全量）**打包进插件本体**，
 运行时**零网络依赖**——适合完全断网或只信任固定内容快照的环境。
 
 - 工具名带 **`_offline`** 后缀（如 `arch_read_offline`），可与在线版 `dsh-arch-advisor` **同时安装**，互不冲突。
@@ -44,6 +44,10 @@ awesome-architecture 约一两周更新一次。更新本离线包：
 1. 上游 clone 拉到最新：`git -C <你的awesome-architecture克隆> pull`
 2. 重新同步 content/（`sync-content` 由作者执行）：把 `tutorial/ cases/ templates/ en/` 及顶层 md 复制回 `content/`
 3. 升版本号 → 发布
+
+**当前快照**：同步自上游 commit `96226d2`（2026-09-21，*为每个页面注入 canonical 与 Open Graph/Twitter 元数据 (#46)*）。
+本次逐文件与上游核对并同步了教程 / 模板 / 案例全部正文。其中**实质性更新**的是：T01「基础模型训练决策专题」中英文（新增）、`tutorial/README.md`、`en/tutorial/README.md`、`README.md`、`README_en.md`、`templates/ai-gateway/README.md`、`en/templates/ai-gateway/README.md`（补 Bifrost）；其余文件逐行核对后确认已与上游一致，未改写。
+行尾说明：被更新过的文件为 LF，未改动的文件保持原 CRLF；`lib/index.js` 的目录解析（`outline()`）已同时兼容 CRLF 与 LF。
 
 > 需要作者提供一个一键同步脚本的话，说明即可。
 
