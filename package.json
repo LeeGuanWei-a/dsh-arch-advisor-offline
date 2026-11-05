@@ -1,6 +1,6 @@
 {
   "name": "dsh-arch-advisor-offline",
-  "version": "0.1.2",
+  "version": "0.3.0",
   "description": "dsh-arch-advisor-offline: fully-offline in-chat architecture consultant for DeepSeek Harness — the awesome-architecture knowledge base (tutorials/templates/cases, zh+en) is bundled into the package, no network needed. · DeepSeek Harness 离线架构顾问插件：awesome-architecture 知识库（教程/模板/案例，中英）全部打包进插件，零网络依赖。工具名带 _offline 后缀，可与在线版并存。",
   "type": "module",
   "main": "lib/index.js",
@@ -14,6 +14,9 @@
     "system-design",
     "offline",
     "knowledge-base",
+    "gbt8567",
+    "software-documentation",
+    "sdlc",
     "agent"
   ],
   "repository": {
@@ -41,7 +44,10 @@
     "LICENSE"
   ],
   "peerDependencies": {
-    "@deepseek-ai/cordis": "^4.0.1",
-    "@deepseek-ai/dsh-tools": ">=0.1.0"
+    "@deepseek-ai/cordis": "~4.0.5",
+    "@deepseek-ai/dsh-tools": ">=0.2.1-rc.5"
+  },
+  "engines": {
+    "dsh": ">=0.2.1-rc.5"
   }
 }
