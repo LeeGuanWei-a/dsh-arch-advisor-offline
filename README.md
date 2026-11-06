@@ -15,9 +15,9 @@
 
 ## 适配的 DSH 版本
 
-| 项 | 版本 | 说明 |
-| --- | --- | --- |
-| **DeepSeek Harness** | **0.2.1-rc.5** | 本版（0.3.0）实际验证的宿主版本 |
+| 项 | 版本 | 说明                    |
+| --- | --- |-----------------------|
+| **DeepSeek Harness** | **0.2.1-rc.5** | 本版（0.3.3）实际验证的宿主版本    |
 | `@deepseek-ai/cordis` | `~4.0.5` | `peerDependencies` 声明 |
 | `@deepseek-ai/dsh-tools` | `>=0.2.1-rc.5` | `peerDependencies` 声明 |
 | `engines.dsh` | `>=0.2.1-rc.5` | 低于此版本安装会被拦截 |
@@ -43,18 +43,28 @@
 | `arch_read_offline` | 读某篇正文（目录+预览/full/zh·en） |
 | `arch_ask_offline` | 想法 → 映射到相关 教程+模板+案例 |
 | `arch_design_offline` | 分步引导式架构设计 |
-| `arch_docs_offline` | **GB/T 8567—2006 的 25 类文档骨架**（`docType="list"` 看清单与裁剪建议） |
+| `arch_docs_offline` | **双体系文档骨架**：旧版 5 类 + 国标 25 类（`docType="list"` 看两套对比） |
 | `arch_version_offline` | 文档标识与修订记录规范（不建 `archive/` 副本） |
 
-## 项目文档能力（v0.3 起按 GB/T 8567—2006）
+## 文档能力：两套体系并存（v0.3.3）
 
-从 v0.3 开始，文档能力不再是自造的 5 类（arch/prd/hld/lld/dbd），而是**国标第 7 章的 25 类**：
+生成文档前**先让用户选体系**，两套都保留：
 
-- 取骨架：`arch_docs_offline(docType="SRS")` 或 `docType="11"`，编号 1~25 与简称都认；
-- 每份返回四块：**代码策略** → **文档控制块** → **章节骨架** → **填写要点 + 完成标准**；
-- 清单与裁剪：`docType="list"` 给出按阶段分组的 25 类、三档规模裁剪建议、代码策略速查。
+| | A 旧版 5 类 | B 国标版 25 类 |
+|---|---|---|
+| 文档 | arch 架构方案 / prd 需求 / hld 概要设计 / lld 详细设计 / dbd 数据库设计 | GB/T 8567—2006 第 7 章的 25 类（FAR…CPM） |
+| 章节来源 | 早期实践样例，非标准 | 国标，已逐条核对 |
+| 代码约束 | 无 | 有（8 档代码策略） |
+| 适用 | 续写存量项目、沿用老模板 | 新项目、对外交付、评审/投标 |
+| 取值 | `arch` `prd` `hld` `lld` `dbd` | `1`~`25` 或 `FAR`…`CPM` |
 
-**代码策略**（解决"概要设计里塞代码"的问题）：
+- 先看对比：`arch_docs_offline(docType="list")`
+- 旧版：`docType="prd", spec="legacy"` → 返回旧版 PRD 骨架（抬头标注"非国标"，并给出对应的国标文档）
+- 国标：`docType="SRS", spec="gb"` 或 `docType="11", spec="gb"`
+- **`spec` 必填**（硬闸门）：不带 `spec` 取骨架会被拒绝并返回两套对比页，强制先确认体系
+- 传错体系会明确报错：`docType="prd", spec="gb"` → 提示改用 `spec="legacy"`
+
+**代码策略**（仅国标版有约束，解决"概要设计里塞代码"）：
 
 | 档位 | 谁能用 |
 |---|---|
@@ -66,9 +76,7 @@
 | 仅测试数据 | STD |
 | 允许片段 / 只引用 | CPM / SPS |
 
-**修订记录固定放文档头部**（紧跟一级标题），不再出现"有时头部有时文末"；升版只在修订记录表追加一行。`archive/` 快照机制已移除——历史版本交给 git。
-
-旧代号（arch/prd/hld/lld/dbd）会返回迁移提示，不再静默兼容。
+**修订记录固定放文档头部**（紧跟一级标题），两套体系一致；升版只在修订记录表追加一行。`archive/` 快照机制已移除——历史版本交给 git。
 
 ## 安装
 
@@ -126,7 +134,7 @@ A：**DSH ≥ 0.2.1-rc.5**（cordis 4.0.5、dsh-tools 0.2.1-rc.5 验证通过）
 **Q：为什么说"想一个方案"时，它有时不调用工具？**
 A：工具是否被调用最终由模型决定；插件能控制的只有两件事——注册工具、往系统提示注入触发规则。本插件注入了两条规则：
 ①「想做一个 X / 帮我想个方案 / 设计一个系统 / 从想法起步」→ 先 `arch_ask_offline` 映射知识库，再按需 `arch_design_offline` 分阶段推进；
-②「生成文档 / 说明书 / 把 xx 写成文档」→ 先 `arch_docs_offline(docType="list")` 定文档清单（25 类里裁），再逐份取骨架、按代码策略填写；版本与修订记录用 `arch_version_offline`。
+②「生成文档 / 说明书 / 把 xx 写成文档」→ 先问用旧版 5 类还是国标 25 类，再 `arch_docs_offline(docType="list")` 看对比、逐份取骨架；版本与修订记录用 `arch_version_offline`。
 若仍不触发，依次检查：插件在当前 profile 是否已加载（改代码/升级后需重载或重启 DSH）、当前模型的工具调用倾向（可换更稳的模型或提高 reasoning effort）、该会话是否真的装了本插件（`web`/`desktop` profile 各自独立）。
 
 ---
@@ -142,7 +150,7 @@ installed alongside the online version without conflicts.
 and dsh-tools 0.2.1-rc.5). Declared via `engines.dsh: ">=0.2.1-rc.5"` and peer ranges
 `@deepseek-ai/cordis ~4.0.5` / `@deepseek-ai/dsh-tools >=0.2.1-rc.5`.
 
-**Documents (v0.3)**: `arch_docs_offline` now returns skeletons for the **25 document
+**Documents (v0.3.3)**: `arch_docs_offline` now returns skeletons for the **25 document
 types of GB/T 8567—2006**, each with a hard code policy (SSDD/SRS = no code; SDD =
 pseudocode only; DBDD = DDL; CPM = snippets; SPS = by reference). `arch_version_offline`
 maintains the document-control block and revision table at the top of each file — no
