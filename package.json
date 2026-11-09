@@ -1,15 +1,22 @@
 {
   "name": "dsh-arch-advisor-offline",
-  "version": "0.3.3",
-  "description": "dsh-arch-advisor-offline: fully-offline in-chat architecture consultant for DeepSeek Harness — the awesome-architecture knowledge base (tutorials/templates/cases, zh+en) is bundled into the package, no network needed. · DeepSeek Harness 离线架构顾问插件：awesome-architecture 知识库（教程/模板/案例，中英）全部打包进插件，零网络依赖。工具名带 _offline 后缀，可与在线版并存。",
+  "version": "0.4.0",
+  "description": "dsh-arch-advisor-offline: fully-offline in-chat architecture consultant for DeepSeek Harness — and a standard Agent Skill for any skill-aware host (Claude Code / CodeBuddy / …). The awesome-architecture knowledge base (tutorials/templates/cases, zh+en) is bundled into the package, no network needed. · DeepSeek Harness 离线架构顾问插件，同时是标准 Agent Skill：awesome-architecture 知识库（教程/模板/案例，中英）全部打包进插件，零网络依赖。工具名带 _offline 后缀，可与在线版并存。",
   "type": "module",
   "main": "lib/index.js",
+  "bin": {
+    "arch-advisor-offline": "lib/cli.js"
+  },
   "license": "MIT",
   "keywords": [
     "deepseek",
     "harness",
     "dsh",
     "dsh-plugin",
+    "agent-skills",
+    "skill",
+    "claude-code",
+    "skills",
     "architecture",
     "system-design",
     "offline",
@@ -27,27 +34,43 @@
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
-    }
+    },
+    "skill": "./skill/dsh-arch-advisor-offline"
   },
   "exports": {
     ".": {
       "default": "./lib/index.js"
     },
+    "./cli": {
+      "default": "./lib/cli.js"
+    },
+    "./lib/cli.js": "./lib/cli.js",
+    "./skill": "./skill/dsh-arch-advisor-offline/SKILL.md",
+    "./skill/SKILL.md": "./skill/dsh-arch-advisor-offline/SKILL.md",
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
   },
   "files": [
     "lib",
     "content",
+    "skill",
+    "scripts",
     "cordis.patch.yml",
     "README.md",
     "LICENSE"
   ],
+  "scripts": {
+    "skill:refs": "node scripts/gen-skill-refs.mjs",
+    "skill:sync": "node scripts/build-skill.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "prepack": "node scripts/build-skill.mjs && node scripts/gen-skill-refs.mjs"
+  },
   "peerDependencies": {
     "@deepseek-ai/cordis": "~4.0.5",
     "@deepseek-ai/dsh-tools": ">=0.2.1-rc.5"
   },
   "engines": {
-    "dsh": ">=0.2.1-rc.5"
+    "dsh": ">=0.2.1-rc.5",
+    "node": ">=18.17"
   }
 }

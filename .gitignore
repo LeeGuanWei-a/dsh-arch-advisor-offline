@@ -2,3 +2,7 @@
 *.tgz
 *.log
 .DS_Store
+
+# IDE / 编辑器本地数据
+.idea/
+.codebuddy/

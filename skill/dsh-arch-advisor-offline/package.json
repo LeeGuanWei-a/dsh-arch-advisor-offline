@@ -1,0 +1,7 @@
+{
+  "name": "dsh-arch-advisor-offline",
+  "version": "0.4.0",
+  "type": "module",
+  "private": true,
+  "description": "dsh-arch-advisor-offline: fully-offline in-chat architecture consultant for DeepSeek Harness — and a standard Agent Skill for any skill-aware host (Claude Code / CodeBuddy / …). The awesome-architecture knowledge base (tutorials/templates/cases, zh+en) is bundled into the package, no network needed. · DeepSeek Harness 离线架构顾问插件，同时是标准 Agent Skill：awesome-architecture 知识库（教程/模板/案例，中英）全部打包进插件，零网络依赖。工具名带 _offline 后缀，可与在线版并存。"
+}
